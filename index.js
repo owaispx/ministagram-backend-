@@ -1,7 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 // const bodyparser = require("body-parser")
-const { registerhandler,loginhandler } = require("./controllers/usercontroller")
+const { registerhandler,loginhandler,deleteuserhandler } = require("./controllers/usercontroller")
 const port = 3000
 const url = "mongodb://localhost:27017/myfirstdatabase"
 const server = express()

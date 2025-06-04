@@ -7,3 +7,5 @@
     },
     password : String
 }) ;
+
+module.exports = Admin ;

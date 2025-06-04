@@ -11,7 +11,7 @@ const registerhandler = async (req, res) => {
         if (!existinguser) {
             if ((username !== "" && email !== "" && password !== "")) {
                 const hashespassword = await bcrypt.hash(password, 10);
-                const newuser = new User({ username, email, password: hashespassword });
+                const newuser = new User({ username, email, password : hashespassword });
                 await newuser.save();
                 res.json({ message: "regestration successfull" })
             } else {
@@ -54,11 +54,21 @@ const loginhandler = async (req, res) => {
 
     }
     catch (err) {
-        res.json({ message: err.message || "internal server error" })
+        res.json({ message: err.message || "Internal server error" })
+    }
+
+    const deleteuserhandler = (req , res)=>{
+        try {
+         const {email,password} = req.body
+        }
+        catch(err){
+            res.json({message :err.message || "Internal server error"})
+        }
     }
 }
 
 module.exports = {
     registerhandler,
     loginhandler,
+    deleteuserhandler,
 }
