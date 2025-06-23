@@ -13,7 +13,7 @@ const registerhandler = async (req, res) => {
                 const hashespassword = await bcrypt.hash(password, 10);
                 const newuser = new User({ username, email, password : hashespassword });
                 await newuser.save();
-                res.json({ message: "regestration successfull" })
+                res.json({ message: "Regestration successfull" })
             } else {
                 res.json({ message: "all credentials required" })
             }
@@ -37,8 +37,9 @@ const loginhandler = async (req, res) => {
                 const passvarify = await bcrypt.compare(password, isuser.password);
                 if (passvarify) {
                     const token = await jsonwebtoken.sign({ _id: isuser._id }, "oursecretkey")
+                    console.log ( "your token is ",token)
                     res.json({
-                        message: "Logged in successfullly", token
+                        message: "Logged in successfully", token
 
                     })
                 } else {
@@ -56,8 +57,9 @@ const loginhandler = async (req, res) => {
     catch (err) {
         res.json({ message: err.message || "Internal server error" })
     }
+}
 
-    const deleteuserhandler = (req , res)=>{
+ const deleteuserhandler = (req , res)=>{
         try {
          const {email,password} = req.body
         }
@@ -65,7 +67,6 @@ const loginhandler = async (req, res) => {
             res.json({message :err.message || "Internal server error"})
         }
     }
-}
 
 module.exports = {
     registerhandler,
