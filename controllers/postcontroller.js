@@ -1,3 +1,4 @@
+
 const post = require("../models/postmodel")
 const cloudinary = require("../utils/cloudinary")
 
@@ -112,5 +113,25 @@ commentshandler = async (req, res) => {
     }
 
 }
+const deleteposthandler = async (req, res) => {
+    try {
+        const postid = req.params.id;
+        const userid = req.user.id;
+        const post = await post.findById(postid)
+        if (!post) {
+             res.json ({message : "post not found"})
+        }
+        if (post.user.toString() !== userid){
+            res.json({message:"unauthorised to delete this post"})
+        }
 
-module.exports = { createposthandler, getpostshandler, togglelikehandler,commentshandler }
+        await post.findByIdAndDelete(postid);
+        res.json({message:"post deleted successfully"})
+    }
+    catch (err) {
+        console.log(err)
+        res.json ({message: "server error"})
+    }
+}
+
+module.exports = { createposthandler, getpostshandler, togglelikehandler, commentshandler,deleteposthandler }

@@ -100,9 +100,31 @@ const loginhandler = async (req, res) => {
     }
 }
 
-const deleteuserhandler = (req, res) => {
+const deleteuserhandler = async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body;
+        const isuser = await User.findOne({ email });
+        if (email && password !== "") {
+            if (isuser) {
+                const userid = isuser._id;
+                const passvarify = await bcrypt.compare(password, isuser.password)
+                if (passvarify) {
+                    const deluser = await User.findByIdAndDelete(userid);
+                    if (deluser) {
+                        res.json({ message: "User deleted successfully" })
+                    }
+                } else {
+                    res.json({ message: "password dose not match" })
+                }
+
+             
+            } else {
+                res.json({message : "user not found + already deleated"})
+            }
+
+        }   else {
+                res.json({ message: "All credentials required" })
+        }
     }
     catch (err) {
         res.json({ message: err.message || "Internal server error" })
@@ -120,13 +142,16 @@ const getuserdetails = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(505).json({message:"server error"})
+        res.status(505).json({ message: "server error" })
     }
 
 }
+
+
 
 module.exports = {
     registerhandler,
     loginhandler,
     deleteuserhandler,
+    getuserdetails,
 }
